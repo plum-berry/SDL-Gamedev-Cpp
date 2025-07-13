@@ -1,0 +1,24 @@
+name: Build on Windows
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up MinGW
+      uses: egor-tensin/setup-mingw@v2
+      with:
+        platform: x64
+
+    - name: Configure CMake
+      run: cmake -S . -B build -G "MinGW Makefiles"
+
+    - name: Build
+      run: cmake --build build
