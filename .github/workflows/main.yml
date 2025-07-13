@@ -1,24 +1,29 @@
-name: Build on Windows
+name: Build with MinGW + SDL2
 
-on:
-  push:
-    branches: [ main ]
+on: [push, pull_request]
 
 jobs:
-  build-windows:
+  build:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout code
+    - name: 🧾 Checkout repo
       uses: actions/checkout@v3
 
-    - name: Set up MinGW
-      uses: egor-tensin/setup-mingw@v2
-      with:
-        platform: x64
+    - name: 🍫 Install MinGW
+      run: choco install mingw --version=13.2.0 -y
 
-    - name: Configure CMake
-      run: cmake -S . -B build -G "MinGW Makefiles"
+    - name: 🛠 Add MinGW to PATH
+      run: echo "C:\ProgramData\chocolatey\lib\mingw\tools\install\mingw64\bin" >> $env:GITHUB_PATH
 
-    - name: Build
+    - name: 🧱 Configure CMake (MinGW)
+      run: cmake -G "MinGW Makefiles" -S . -B build
+
+    - name: 🔨 Build with MinGW
       run: cmake --build build
+
+    - name: 📦 Upload Executable
+      uses: actions/upload-artifact@v3
+      with:
+        name: SDLApp-Windows
+        path: build/SDLApp.exe
