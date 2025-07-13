@@ -23,7 +23,7 @@ jobs:
       run: cmake --build build
 
     - name: 📦 Upload Executable
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: SDLApp-Windows
         path: build/SDLApp.exe
