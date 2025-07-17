@@ -15,5 +15,5 @@ include_directories(${SDL_IMAGE_INCLUDE_DIR})
 link_directories((${SDL3_LIBRARY_DIR}))
 link_directories((${SDL_IMAGE_LIBRARY_DIR}))
 
-add_executable(SDLApp main.cpp Game.cpp)
+add_executable(SDLApp main.cpp Game.cpp TextureManager.cpp GameObject.cpp)
 target_link_libraries(SDLApp mingw32 SDL3 SDL3_image)
