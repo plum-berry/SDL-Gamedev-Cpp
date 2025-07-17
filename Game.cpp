@@ -1,6 +1,9 @@
 #include "Game.hpp"
+#include "TextureManager.hpp"
+#include "GameObject.hpp"
 
-SDL_Texture* playerTex;
+GameObject* player;
+GameObject* enemy;
 Game::Game()
 {
 
@@ -21,20 +24,8 @@ void Game::init(const char* title,int width, int height, bool fullscreen)
     window = SDL_CreateWindow(title,width,height,flags);
     renderer = SDL_CreateRenderer(window,NULL);
     is_running = true;
-    SDL_Surface* tmpsurface = IMG_Load("../assets/knight.png");
-    if(!tmpsurface)
-    {
-        SDL_Log("Failed to load image: %s",SDL_GetError());
-        is_running = false;
-    }
-    playerTex = SDL_CreateTextureFromSurface(renderer,tmpsurface);
-    SDL_DestroySurface(tmpsurface);
-
-    if(!playerTex)
-    {
-        SDL_Log("Failed to create texture: %s",SDL_GetError());
-        is_running = false;
-    }
+    player = new GameObject("../assets/knight.png",renderer,0,0);
+    enemy = new GameObject("../assets/knight.png",renderer,50,50);
 }
 
 
@@ -56,14 +47,16 @@ void Game::handleEvents()
 
 void Game::update()
 {
-    std::cout<<"Game is running"<<std::endl;
+player->Update();
+enemy->Update();
 }
 
 void Game::render()
 {
     SDL_SetRenderDrawColor(renderer,255,0,0,255);
     SDL_RenderClear(renderer);
-    SDL_RenderTexture(renderer,playerTex,NULL,NULL);
+    player->Render();
+    enemy->Render();
     SDL_RenderPresent(renderer);
 
 }
